@@ -12,27 +12,23 @@ namespace ConsumerProducer
     {
         static void Main(string[] args)
         {
-            BilKoe queue1 = new BilKoe("Kø1");
-            BilKoe queue2 = new BilKoe("Kø2");
-            BilKoe queue3 = new BilKoe("Kø3");
+            CarQueue queue1 = new CarQueue("Queue 1");
+            CarQueue queue2 = new CarQueue("Queue 2");
+            CarQueue queue3 = new CarQueue("Queue 3");
 
             Producer producer = new Producer(queue1, queue2, queue3);
 
-            Betalingsstander stander1 = new Betalingsstander(queue1);
-            Betalingsstander stander2 = new Betalingsstander(queue2);
-            Betalingsstander stander3 = new Betalingsstander(queue3);
+            Paywall stander1 = new Paywall(queue1);
+            Paywall stander2 = new Paywall(queue2);
+            Paywall stander3 = new Paywall(queue3);
 
-            Thread producerThread = new Thread(producer.Run);
-
-            Thread consumerThread1 = new Thread(stander1.Run);
-            Thread consumerThread2 = new Thread(stander2.Run);
-            Thread consumerThread3 = new Thread(stander3.Run);
-
-            consumerThread1.Start();
-            consumerThread2.Start();
-            consumerThread3.Start();
-
-            producerThread.Start();
+            var threads = new List<Thread>()
+            {
+                new Thread(producer.Run),
+                new Thread(stander1.Run),
+                new Thread(stander2.Run),
+                new Thread(stander3.Run)
+            };
 
             Console.ReadKey();
 

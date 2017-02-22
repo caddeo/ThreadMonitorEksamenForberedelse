@@ -5,37 +5,47 @@ using System.Threading;
 
 namespace Model {
     public class Producer {
-        // Felter
 
-        List<BilKoe> queues = new List<BilKoe>();
+        readonly List<CarQueue> _queues = new List<CarQueue>();
 
-        public Producer(BilKoe queue1, BilKoe queue2, BilKoe queue3)
+        private List<Car> _cars;
+
+        public Producer(params CarQueue[] carQueues)
         {
-            queues.Add(queue1);
-            queues.Add(queue2);
-            queues.Add(queue3);
+            foreach (var queue in carQueues)
+            {
+                this._queues.Add(queue);
+            }
+
+            _cars = new List<Car>()
+            {
+                new Car("1"),
+                new Car("2"),
+                new Car("3"),
+            };
         }
 
-        private Random generator = new Random((int)DateTime.Now.Ticks);
+        public void Run()
+        {
+            var random = new Random((int)DateTime.Now.Ticks);
 
-        Bil drivingcar = new Bil();
-
-        public void Run() {
             while (true) {
-                Thread.Sleep((int)(-Math.Log(1 - generator.NextDouble()) * 1000));
+                Thread.Sleep((int)(-Math.Log(1 - random.NextDouble()) * 1000));
 
-                BilKoe lowest = null;
+                CarQueue lowestQueue = null;
 
-                foreach(var queue in queues)
+                foreach(var queue in _queues)
                 {
-                    if(lowest == null || queue.Count < lowest.Count)
+                    if(lowestQueue == null || queue.Count < lowestQueue.Count)
                     {
-                        lowest = queue;
+                        lowestQueue = queue;
                     }
                 }
 
-                lowest.Put(drivingcar);
-                Console.WriteLine(drivingcar.Nr + " satte sig ind i kø " + lowest.Buffernavn);
+                var currentCar = _cars[random.Next(_cars.Count)];
+
+                lowestQueue?.Put(currentCar);
+                Console.WriteLine($" {currentCar.Name} entered the queue {lowestQueue?.Name}");
             }
         }
     }

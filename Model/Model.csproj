@@ -40,9 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Betalingsstander.cs" />
-    <Compile Include="Bil.cs" />
-    <Compile Include="BilKoe.cs" />
+    <Compile Include="Paywall.cs" />
+    <Compile Include="Car.cs" />
+    <Compile Include="CarQueue.cs" />
     <Compile Include="Producer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
